@@ -31,6 +31,8 @@ public class Main {
 			}
 
 			System.out.println(stringBuffer);
+            scanner.close();
+            bufferedReader.close();
 
 		} catch (IOException e) {
 			
