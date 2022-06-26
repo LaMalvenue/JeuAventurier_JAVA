@@ -47,10 +47,14 @@ public class Main {
 				System.out.println("Veuillez rentrer les directions");
 				String direction = scanner.nextLine();
 				
-				boolean testDirection = getDirection(direction, startCoordinates, file);
+				boolean testDirection = getDirection(direction, startCoordinates,file);
 				if (testDirection) {
 					System.out.println("La coordonnée du personnage est: (" +startCoordinates[0] +"," + startCoordinates[1] +")");
-				}
+                    /*if (stringBuffer.charAt(startCoordinates[0] | startCoordinates[1]) == '#') {
+                        System.out.println("Attention, vous êtes sur un arbre");
+                    }*/
+                } 
+                
 			}
             scanner.close();
 		} catch (IOException e) {
@@ -115,7 +119,7 @@ public class Main {
 
 	public static boolean getDirection(String direction, int[] coordinates,File file) {
 
-        // Utiliser un char --> 1caractère
+        // Utiliser un char --> 1 caractère
 		direction = direction.toUpperCase();
 
 		for (int i = 0; i < direction.length(); i++) {
