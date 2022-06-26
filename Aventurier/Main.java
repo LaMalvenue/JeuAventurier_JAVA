@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-//Etape 1: Lire le fichier txt 
+//Etape 1: Lire le fichier txt avec le Scanner
 //Etape 2: Récupérer les coordonnées de l'utilisateur et les stocker dans un tableau (deux dimensions ?)
 //Etape 3: Créer une méthode qui empêche de commencer en dehors du cadre et sur un #
 //Etape 4: Permettre à l'utisateur de rentrer les directions, utilisation du switch case
@@ -50,11 +50,6 @@ public class Main {
                 if (testDirection) {
                     System.out.println("La coordonnée du personnage est: (" + startCoordinates[0] + ","
                             + startCoordinates[1] + ")");
-                    /*
-                     * if (stringBuffer.charAt(startCoordinates[0] | startCoordinates[1]) == '#') {
-                     * System.out.println("Attention, vous êtes sur un arbre");
-                     * }
-                     */
                 }
             }
             scanner.close();
@@ -95,7 +90,7 @@ public class Main {
                     if (coordinates[0] <= lineIndex) {
 
                         if (stringBuffer.charAt(coordinates[0]) == '#') {
-                            System.out.println("Impossible de commencer à cette position !");
+                            System.out.println("Impossible de commencer à cette position, vous êtes sur un arbre !");
                             return false;
                         } else {
                             System.out.println("Coordonnées de départ enregistrées !");
@@ -141,8 +136,65 @@ public class Main {
                         coordinates[0] -= 1;
                         break;
                 }
+
+                boolean collision = collision(coordinates, file);
+				
+				if (collision == false) {
+                    System.out.println("Vous ne pouvez entrer dans la forêt impénétrable, restez sur votre case");
+					switch(charDirection) {
+					    case 'N':
+                        coordinates[1] += 1;
+						break;
+
+					    case 'S':
+                        coordinates[1] -= 1;
+						break;
+
+					    case 'E':
+                        coordinates[0] -= 1;
+						break;
+
+					    case 'O':
+                        coordinates[0] += 1;
+						break;
+					}
+				}
             }
         }
         return true;
+    }
+
+    public static boolean collision(int[] coordinates, File file) {
+        try {
+            FileReader filereader = new FileReader(file);
+            BufferedReader bufferReader = new BufferedReader(filereader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+
+            int lineIndex = 0;
+
+            while ((line = bufferReader.readLine()) != null) {
+                if (lineIndex == coordinates[1]) {
+                    // Calcul de la taille
+                    stringBuffer.append(line);
+                    lineIndex = stringBuffer.length();
+
+                    if (coordinates[0] <= lineIndex) {
+
+                        if (stringBuffer.charAt(coordinates[0]) == '#') {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+                lineIndex += 1;
+            }
+            filereader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
