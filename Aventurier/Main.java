@@ -36,6 +36,7 @@ public class Main {
 
             //Récupération des données de départ
             int[] startCoordinates = getStartCoordinates();
+            boolean testStartCoordinates = isRightArea(startCoordinates, file);
             scanner.close();
             bufferedReader.close();
 
@@ -58,4 +59,45 @@ public class Main {
         scanner.close();
         return coordinates;
     }
+
+    public static boolean isRightArea(int[] coordinates, File file){
+        try {
+            FileReader filereader = new FileReader(file);
+            BufferedReader bufferReader = new BufferedReader(filereader);;
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+
+            int lineIndex = 0;
+
+			while ((line = bufferReader.readLine()) != null) {
+				if (lineIndex == coordinates[1]) {
+					// Calcul de la taille
+					stringBuffer.append(line);
+					lineIndex = stringBuffer.length();
+                    
+					if (coordinates[0] <= lineIndex) {
+
+						if (stringBuffer.charAt(coordinates[0]) == '#') {
+							System.out.println("impossible de commencer à cette position");
+							return false;
+						} else {
+                            System.out.println("Coordonnées de départ enregistrées");
+							return true;
+						}
+					}
+					 
+				}
+				lineIndex += 1;
+			}
+			filereader.close();
+            bufferReader.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("La coordonnée n'est pas située sur la carte");
+		return false;
+    }
+    
 }
