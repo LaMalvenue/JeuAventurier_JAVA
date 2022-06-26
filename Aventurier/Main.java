@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 //Etape 1: Lire le fichier txt avec le Scanner
-//Etape 2: Récupérer les coordonnées de l'utilisateur et les stocker dans un tableau (double dimensions ?)
+//Etape 2: Récupérer les coordonnées de l'utilisateur et les stocker dans un tableau (deux dimensions ?)
 //Etape 3: Créer une méthode qui empêche de commencer en dehors du cadre et sur un #
 //Etape 4: Permettre à l'utisateur de rentrer les directions, utilisation du switch cases
-//Etape 5: gérer le système de collision.
+//Etape 5: Gérer le système de collision-> à réaliser
 
 
 public class Main {
@@ -68,10 +68,10 @@ public class Main {
 		int[] coordinates = new int[2];
 		Scanner scanner = new Scanner(System.in);
 		// Récupération de la donnée x
-		System.out.println("Veuillez rentrer les coordonnées x");
+		System.out.println("Veuillez rentrer les coordonnées x :");
 		coordinates[0] = scanner.nextInt();
 		// Récupération de la donnée y
-		System.out.println("Veuillez rentrer les coordonnées y");
+		System.out.println("Veuillez rentrer les coordonnées y :");
 		coordinates[1] = scanner.nextInt();
         
 		return coordinates;
@@ -95,10 +95,10 @@ public class Main {
 					if (coordinates[0] <= lineIndex) {
 
 						if (stringBuffer.charAt(coordinates[0]) == '#') {
-							System.out.println("Impossible de commencer à cette position");
+							System.out.println("Impossible de commencer à cette position !");
 							return false;
 						} else {
-                            System.out.println("Coordonnées de départ enregistrées");
+                            System.out.println("Coordonnées de départ enregistrées !");
 							return true;
 						}
 					}
@@ -113,7 +113,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		System.out.println("La coordonnée n'est pas située sur la carte");
+		System.out.println("La coordonnée n'est pas située sur la carte, veuillez recommencer !");
 		return false;
     }
 
@@ -125,7 +125,7 @@ public class Main {
 		for (int i = 0; i < direction.length(); i++) {
 			char charDirection = direction.charAt(i);
 			if (charDirection != 'N' && charDirection != 'S' && charDirection != 'E' && charDirection != 'O') {
-				System.out.println("Veuillez renseigner une bonne direction E, S, N ou O");
+				System.out.println("Veuillez renseigner une bonne direction : 'E', 'S', 'N' ou 'O'");
 				return false;
 			} else {
 				
