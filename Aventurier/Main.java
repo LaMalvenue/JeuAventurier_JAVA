@@ -35,7 +35,7 @@ public class Main {
                 stringBuffer.append(line);
                 stringBuffer.append("\n");
             }
-
+            bufferReader.close();
             System.out.println(stringBuffer.toString());
 
             // Récupération des coordonnées de départ
@@ -97,6 +97,7 @@ public class Main {
                             return true;
                         }
                     }
+                    bufferReader.close();
                 }
                 lineIndex += 1;
             }
@@ -187,14 +188,18 @@ public class Main {
                             return true;
                         }
                     }
+                    bufferReader.close();
                 }
                 lineIndex += 1;
             }
+            
             filereader.close();
 
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         return false;
-    }
+    } 
 }
