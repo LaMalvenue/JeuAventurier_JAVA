@@ -12,139 +12,137 @@ import java.util.Scanner;
 //Etape 4: Permettre à l'utisateur de rentrer les directions, utilisation du switch cases
 //Etape 5: Gérer le système de collision-> à réaliser
 
-
 public class Main {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		// Chemin du fichier
-		String path = "/home/cristini/Bureau/carte.txt";
-		Scanner scanner = new Scanner(System.in);
-		// Chargement du fichier txt
-		// Le fichier d'entrée
-		File file = new File(path);
-		// Créer l'objet File Reader
-		try {
-			FileReader fr = new FileReader(file);
+        // Chemin du fichier
+        String path = "/home/cristini/Bureau/carte.txt";
+        Scanner scanner = new Scanner(System.in);
+        // Chargement du fichier txt
+        // Le fichier d'entrée
+        File file = new File(path);
+        // Créer l'objet File Reader
+        try {
+            FileReader fr = new FileReader(file);
 
-			// Créer l'objet BufferedReader
-			BufferedReader bufferReader = new BufferedReader(fr);
-			StringBuffer stringBuffer = new StringBuffer();
-			String line;
-			while ((line = bufferReader.readLine()) != null) {
-				// ajoute la ligne au buffer
-				stringBuffer.append(line);
-				stringBuffer.append("\n");
-			}
+            // Créer l'objet BufferedReader
+            BufferedReader bufferReader = new BufferedReader(fr);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = bufferReader.readLine()) != null) {
+                // ajoute la ligne au buffer
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
 
-			System.out.println(stringBuffer.toString());
+            System.out.println(stringBuffer.toString());
 
-			// Récupération des coordonnées de départ
-			int[] startCoordinates = getStartCoordinates();
-			boolean testStartCoordinates = isRightArea(startCoordinates, file);
+            // Récupération des coordonnées de départ
+            int[] startCoordinates = getStartCoordinates();
+            boolean testStartCoordinates = isRightArea(startCoordinates, file);
 
-			if (testStartCoordinates) {
-				System.out.println("Veuillez rentrer les directions");
-				String direction = scanner.nextLine();
-				
-				boolean testDirection = getDirection(direction, startCoordinates,file);
-				if (testDirection) {
-					System.out.println("La coordonnée du personnage est: (" +startCoordinates[0] +"," + startCoordinates[1] +")");
-                    /*if (stringBuffer.charAt(startCoordinates[0] | startCoordinates[1]) == '#') {
-                        System.out.println("Attention, vous êtes sur un arbre");
-                    }*/
-                } 
-                
-			}
+            if (testStartCoordinates) {
+                System.out.println("Veuillez rentrer les directions");
+                String direction = scanner.nextLine();
+
+                boolean testDirection = getDirection(direction, startCoordinates, file);
+                if (testDirection) {
+                    System.out.println("La coordonnée du personnage est: (" + startCoordinates[0] + ","
+                            + startCoordinates[1] + ")");
+                    /*
+                     * if (stringBuffer.charAt(startCoordinates[0] | startCoordinates[1]) == '#') {
+                     * System.out.println("Attention, vous êtes sur un arbre");
+                     * }
+                     */
+                }
+            }
             scanner.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	}
+    public static int[] getStartCoordinates() {
 
-	public static int[] getStartCoordinates() {
+        int[] coordinates = new int[2];
+        Scanner scanner = new Scanner(System.in);
+        // Récupération de la donnée x
+        System.out.println("Veuillez rentrer les coordonnées x :");
+        coordinates[0] = scanner.nextInt();
+        // Récupération de la donnée y
+        System.out.println("Veuillez rentrer les coordonnées y :");
+        coordinates[1] = scanner.nextInt();
 
-		int[] coordinates = new int[2];
-		Scanner scanner = new Scanner(System.in);
-		// Récupération de la donnée x
-		System.out.println("Veuillez rentrer les coordonnées x :");
-		coordinates[0] = scanner.nextInt();
-		// Récupération de la donnée y
-		System.out.println("Veuillez rentrer les coordonnées y :");
-		coordinates[1] = scanner.nextInt();
-        
-		return coordinates;
-	}
+        return coordinates;
+    }
 
-    public static boolean isRightArea(int[] coordinates, File file){
+    public static boolean isRightArea(int[] coordinates, File file) {
         try {
             FileReader filereader = new FileReader(file);
             BufferedReader bufferReader = new BufferedReader(filereader);
             StringBuffer stringBuffer = new StringBuffer();
             String line;
-            
+
             int lineIndex = 0;
 
-			while ((line = bufferReader.readLine()) != null) {
-				if (lineIndex == coordinates[1]) {
-					// Calcul de la taille
-					stringBuffer.append(line);
-					lineIndex = stringBuffer.length();
-                    
-					if (coordinates[0] <= lineIndex) {
+            while ((line = bufferReader.readLine()) != null) {
+                if (lineIndex == coordinates[1]) {
+                    // Calcul de la taille
+                    stringBuffer.append(line);
+                    lineIndex = stringBuffer.length();
 
-						if (stringBuffer.charAt(coordinates[0]) == '#') {
-							System.out.println("Impossible de commencer à cette position !");
-							return false;
-						} else {
+                    if (coordinates[0] <= lineIndex) {
+
+                        if (stringBuffer.charAt(coordinates[0]) == '#') {
+                            System.out.println("Impossible de commencer à cette position !");
+                            return false;
+                        } else {
                             System.out.println("Coordonnées de départ enregistrées !");
-							return true;
-						}
-					}
-                    
-				}
-				lineIndex += 1;
-			}
-            
-			filereader.close();
+                            return true;
+                        }
+                    }
+                }
+                lineIndex += 1;
+            }
+            filereader.close();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		System.out.println("La coordonnée n'est pas située sur la carte, veuillez recommencer !");
-		return false;
+        System.out.println("La coordonnée n'est pas située sur la carte, veuillez recommencer !");
+        return false;
     }
 
-	public static boolean getDirection(String direction, int[] coordinates,File file) {
+    public static boolean getDirection(String direction, int[] coordinates, File file) {
 
         // Utiliser un char --> 1 caractère
-		direction = direction.toUpperCase();
+        direction = direction.toUpperCase();
 
-		for (int i = 0; i < direction.length(); i++) {
-			char charDirection = direction.charAt(i);
-			if (charDirection != 'N' && charDirection != 'S' && charDirection != 'E' && charDirection != 'O') {
-				System.out.println("Veuillez renseigner une bonne direction : 'E', 'S', 'N' ou 'O'");
-				return false;
-			} else {
-				
-				switch(charDirection) {
-				case 'N':
-                coordinates[1] -= 1;
-					break;
-				case 'S':
-                coordinates[1] += 1;
-					break;
-				case 'E':
-                coordinates[0] += 1;
-					break;
-				case 'O':
-                coordinates[0] -= 1;
-					break;
-				}
-			}
-		}
-		return true;
-	}
+        for (int i = 0; i < direction.length(); i++) {
+            char charDirection = direction.charAt(i);
+            if (charDirection != 'N' && charDirection != 'S' && charDirection != 'E' && charDirection != 'O') {
+                System.out.println("Veuillez renseigner une bonne direction : 'E', 'S', 'N' ou 'O'");
+                return false;
+            } else {
+
+                switch (charDirection) {
+                    case 'N':
+                        coordinates[1] -= 1;
+                        break;
+                    case 'S':
+                        coordinates[1] += 1;
+                        break;
+                    case 'E':
+                        coordinates[0] += 1;
+                        break;
+                    case 'O':
+                        coordinates[0] -= 1;
+                        break;
+                }
+            }
+        }
+        return true;
+    }
 }
