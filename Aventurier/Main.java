@@ -139,27 +139,27 @@ public class Main {
                 }
 
                 boolean collision = collision(coordinates, file);
-				
-				if (collision == false) {
+
+                if (collision == false) {
                     System.out.println("Vous ne pouvez entrer dans la forêt impénétrable, restez sur votre case");
-					switch(charDirection) {
-					    case 'N':
-                        coordinates[1] += 1;
-						break;
+                    switch (charDirection) {
+                        case 'N':
+                            coordinates[1] += 1;
+                            break;
 
-					    case 'S':
-                        coordinates[1] -= 1;
-						break;
+                        case 'S':
+                            coordinates[1] -= 1;
+                            break;
 
-					    case 'E':
-                        coordinates[0] -= 1;
-						break;
+                        case 'E':
+                            coordinates[0] -= 1;
+                            break;
 
-					    case 'O':
-                        coordinates[0] += 1;
-						break;
-					}
-				}
+                        case 'O':
+                            coordinates[0] += 1;
+                            break;
+                    }
+                }
             }
         }
         return true;
@@ -192,14 +192,13 @@ public class Main {
                 }
                 lineIndex += 1;
             }
-            
+
             filereader.close();
 
-            
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return false;
-    } 
+    }
 }
