@@ -6,11 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-//Etape 1: Lire le fichier txt avec le Scanner
-//Etape 2: Récupérer les coordonnées de l'utilisateur et les stocker dans un tableau (deux dimensions ?)
+//Etape 1: Lire le fichier txt 
+//Etape 2: Récupérer les coordonnées de l'utilisateur avec le Scanner et les stocker dans un tableau (deux dimensions ?)
 //Etape 3: Créer une méthode qui empêche de commencer en dehors du cadre et sur un #
 //Etape 4: Permettre à l'utisateur de rentrer les directions, utilisation du switch case
-//Etape 5: Gérer le système des collisions-> à réaliser
+//Etape 5: Gérer le système des collisions
 
 public class Main {
 
