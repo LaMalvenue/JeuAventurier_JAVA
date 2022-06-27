@@ -14,58 +14,48 @@ import java.util.Scanner;
 
 public class Main {
 
-    // Mettre en singleton pour le scanner ?
-    public static Scanner scanner = null;
+    private static final String path = "/home/arouviere/Bureau/carte.txt";
+    private static final File file = new File(path);
+
+    private static boolean playAgain = true;
 
     public static void main(String[] args) {
+        do {
+            try (Scanner scanner = new Scanner(System.in)) {
+                FileReader fr = new FileReader(file);
+                BufferedReader bufferReader = new BufferedReader(fr);
+                StringBuffer stringBuffer = new StringBuffer();
+                String line;
 
-        // Chemin du fichier
-        String path = "/home/cristini/Bureau/carte.txt";
-        scanner = new Scanner(System.in);
-        // Chargement du fichier txt
-        // Le fichier d'entrée
-
-        File file = new File(path);
-        // Créer l'objet File Reader
-        try {
-            FileReader fr = new FileReader(file);
-
-            // Créer l'objet BufferedReader
-            BufferedReader bufferReader = new BufferedReader(fr);
-            StringBuffer stringBuffer = new StringBuffer();
-            String line;
-            while ((line = bufferReader.readLine()) != null) {
-                // ajoute la ligne au buffer
-                stringBuffer.append(line);
-                stringBuffer.append("\n");
-            }
-            bufferReader.close();
-            System.out.println(stringBuffer.toString());
-
-            // Récupération des coordonnées de départ
-            int[] startCoordinates = getStartCoordinates();
-            boolean testStartCoordinates = isRightArea(startCoordinates, file);
-
-            if (testStartCoordinates) {
-                System.out.println("Veuillez rentrer les directions");
-                String direction = scanner.nextLine();
-
-                boolean testDirection = getDirection(direction, startCoordinates, file);
-                if (testDirection) {
-                    System.out.println("La coordonnée du personnage est: (" + startCoordinates[0] + ","
-                            + startCoordinates[1] + ")");
+                while ((line = bufferReader.readLine()) != null) {
+                    // ajoute la ligne au buffer
+                    stringBuffer.append(line);
+                    stringBuffer.append("\n");
                 }
+                bufferReader.close();
+                System.out.println(stringBuffer);
+
+                // Récupération des coordonnées de départ
+                int[] startCoordinates = getStartCoordinates();
+
+                if (isStartCoordinate(startCoordinates)) {
+                    System.out.println("Veuillez rentrer les directions");
+                    String direction = scanner.nextLine();
+
+                    if (getDirection(direction, startCoordinates)) {
+                        System.out.println("La coordonnée du personnage est: (" + startCoordinates[0] + "," + startCoordinates[1] + ")");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            scanner.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } while (playAgain);
     }
 
     public static int[] getStartCoordinates() {
-
         int[] coordinates = new int[2];
         Scanner scanner = new Scanner(System.in);
+
         // Récupération de la donnée x
         System.out.println("Veuillez rentrer les coordonnées x :");
         coordinates[0] = scanner.nextInt();
@@ -73,10 +63,11 @@ public class Main {
         System.out.println("Veuillez rentrer les coordonnées y :");
         coordinates[1] = scanner.nextInt();
 
+        scanner.close();
         return coordinates;
     }
 
-    public static boolean isRightArea(int[] coordinates, File file) {
+    public static boolean isStartCoordinate(int[] coordinates) {
         try {
             FileReader filereader = new FileReader(file);
             BufferedReader bufferReader = new BufferedReader(filereader);
@@ -115,8 +106,7 @@ public class Main {
         return false;
     }
 
-    public static boolean getDirection(String direction, int[] coordinates, File file) {
-
+    public static boolean getDirection(String direction, int[] coordinates) {
         // Utiliser un char --> 1 caractère
         direction = direction.toUpperCase();
 
@@ -126,42 +116,20 @@ public class Main {
                 System.out.println("Veuillez renseigner une bonne direction : 'E', 'S', 'N' ou 'O'");
                 return false;
             } else {
-
                 switch (charDirection) {
-                    case 'N':
-                        coordinates[1] -= 1;
-                        break;
-                    case 'S':
-                        coordinates[1] += 1;
-                        break;
-                    case 'E':
-                        coordinates[0] += 1;
-                        break;
-                    case 'O':
-                        coordinates[0] -= 1;
-                        break;
+                    case 'N' : coordinates[1] -= 1;
+                    case 'S' : coordinates[1] += 1;
+                    case 'E' : coordinates[0] += 1;
+                    case 'O' : coordinates[0] -= 1;
                 }
 
-                boolean collision = collision(coordinates, file);
-
-                if (collision == true) {
+                if (collision(coordinates)) {
                     System.out.println("Vous ne pouvez entrer dans la forêt impénétrable, restez sur votre case");
                     switch (charDirection) {
-                        case 'N':
-                            coordinates[1] += 1;
-                            break;
-
-                        case 'S':
-                            coordinates[1] -= 1;
-                            break;
-
-                        case 'E':
-                            coordinates[0] -= 1;
-                            break;
-
-                        case 'O':
-                            coordinates[0] += 1;
-                            break;
+                        case 'N' : coordinates[1] += 1;
+                        case 'S' : coordinates[1] -= 1;
+                        case 'E' : coordinates[0] -= 1;
+                        case 'O' : coordinates[0] += 1;
                     }
                 }
             }
@@ -169,11 +137,11 @@ public class Main {
         return true;
     }
 
-    public static boolean collision(int[] coordinates, File file) {
+    public static boolean collision(int[] coordinates) {
         try {
             FileReader filereader = new FileReader(file);
             BufferedReader bufferReader = new BufferedReader(filereader);
-            StringBuffer stringBuffer = new StringBuffer();
+            StringBuilder stringBuilder = new StringBuilder();
             String line;
 
             int lineIndex = 0;
@@ -181,16 +149,11 @@ public class Main {
             while ((line = bufferReader.readLine()) != null) {
                 if (lineIndex == coordinates[1]) {
                     // Calcul de la taille
-                    stringBuffer.append(line);
-                    lineIndex = stringBuffer.length();
+                    stringBuilder.append(line);
+                    lineIndex = stringBuilder.length();
 
                     if (coordinates[0] <= lineIndex) {
-
-                        if (stringBuffer.charAt(coordinates[0]) == '#') {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return stringBuilder.charAt(coordinates[0]) == '#';
                     }
                     bufferReader.close();
                 }
