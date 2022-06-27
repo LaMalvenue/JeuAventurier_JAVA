@@ -14,13 +14,17 @@ import java.util.Scanner;
 
 public class Main {
 
+    // Mettre en singleton pour le scanner ?
+    public static Scanner scanner = null;
+
     public static void main(String[] args) {
 
         // Chemin du fichier
         String path = "/home/cristini/Bureau/carte.txt";
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         // Chargement du fichier txt
         // Le fichier d'entrée
+
         File file = new File(path);
         // Créer l'objet File Reader
         try {
@@ -140,7 +144,7 @@ public class Main {
 
                 boolean collision = collision(coordinates, file);
 
-                if (collision == false) {
+                if (collision == true) {
                     System.out.println("Vous ne pouvez entrer dans la forêt impénétrable, restez sur votre case");
                     switch (charDirection) {
                         case 'N':
@@ -183,9 +187,9 @@ public class Main {
                     if (coordinates[0] <= lineIndex) {
 
                         if (stringBuffer.charAt(coordinates[0]) == '#') {
-                            return false;
-                        } else {
                             return true;
+                        } else {
+                            return false;
                         }
                     }
                     bufferReader.close();
